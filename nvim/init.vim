@@ -1,9 +1,16 @@
 set clipboard+=unnamedplus
 
+" key remaps
 noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
+
+inoremap <nowait> jj <Esc>
+inoremap <C-s> <Esc> :w <cr>
+nnoremap <C-s> <Esc> :w <cr>
+inoremap <C-q> <Esc> :q! <cr>
+nnoremap <C-q> <Esc> :q!<cr>
 
 " no swapfile
 set noswapfile
