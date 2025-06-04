@@ -1,0 +1,7 @@
+[init]
+	defaultBranch = main
+[user]
+	name = btlarkin
+	email = 149228586+btlarkin@users.noreply.github.com
+[core]
+	pager = diff-so-fancy | less --tabs=4 -RFX
