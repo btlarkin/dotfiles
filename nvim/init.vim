@@ -19,9 +19,6 @@ set undodir=$HOME/.config/nvim/undo
 set undolevels=10000
 set undoreload=10000
 
-" Show substitution
-set inccommand=nosplit
-
 " Key remaps
 inoremap <nowait> jj <Esc>
 inoremap <C-s> <Esc> :w <cr>
@@ -35,15 +32,40 @@ noremap <Left> <Nop>
 noremap <Right> <Nop>
 
 " Plugins
-call plug#begin('~/.vim/plugged')
+call plug#begin("$XDG_CONFIG_HOME/nvim/plugged")
 Plug 'junegunn/seoul256.vim'
 Plug 'junegunn/goyo.vim' , {'for' : 'markdown' }
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/vim-plug'
+Plug 'junegunn/fzf.vim'
+Plug 'chrisbra/csv.vim'
+Plug 'moll/vim-bbye'
+Plug 'simeji/winresizer'
+Plug 'simnalamburt/vim-mundo'
 Plug 'mattn/emmet-vim'
 Plug 'alvan/vim-closetag'
 Plug 'andrewradev/tagalong.vim'
 call plug#end()
+
+" Show substitution
+set inccommand=nosplit
+
+nnoremap <space> <nop>
+let mapleader = "\<space>"
+
+nnoremap <leader>bn :bn<cr> ;buffer next
+nnoremap <leader>tn gt ;new tab
+
+" Config for chrisbra/csv.vim
+augroup filetype_csv
+    autocmd! 
+
+    autocmd BufRead,BufWritePost *.csv :%ArrangeColumn!
+    autocmd BufWritePre *.csv :%UnArrangeColumn
+augroup END
+
+" Config for fzf.vim (BONUS :D)
+nnoremap <leader>f :Files<cr>
 
 " Emmet
 let g:user_emmet_leader_key=','
