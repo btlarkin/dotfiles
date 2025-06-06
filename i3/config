@@ -26,6 +26,13 @@ font pango: DejaVu Sans Mono 8
 # https://wiki.archlinux.org/index.php/XDG_Autostart
 exec --no-startup-id dex --autostart --environment i3
 
+# Set screen blanking and DPMS timeouts (e.g., 1 hour)
+exec_always --no-startup-id xset s 3600 3600
+exec_always --no-startup-id xset dpms 3600 3600 3600
+
+# OR, to completely disable:
+# exec_always --no-startup-id xset s off -dpms
+
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
 
