@@ -66,3 +66,17 @@ ln -sf "$DOTFILES/dunst/dunstrc" "$XDG_CONFIG_HOME/dunst/dunstrc"
 mkdir -p "$XDG_CONFIG_HOME/git"
 ln -sf "$DOTFILES/git/.gitconfig" "$XDG_CONFIG_HOME/git/.gitconfig"
 
+########
+# tmux #
+########
+
+mkdir -p "$XDG_CONFIG_HOME/tmux"
+ln -sf "$DOTFILES/tmux/tmux.conf" "$XDG_CONFIG_HOME/tmux/tmux.conf"
+
+rm -rf "$XDG_CONFIG_HOME/tmuxp"
+ln -sf "$DOTFILES/tmux/tmuxp" "$XDG_CONFIG_HOME/tmuxp"
+
+[ ! -d "$XDG_CONFIG_HOME/tmux/plugins" ] \
+&& git clone https://github.com/tmux-plugins/tpm \
+"$XDG_CONFIG_HOME/tmux/plugins/tpm"
+

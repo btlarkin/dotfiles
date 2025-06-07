@@ -31,6 +31,9 @@ noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
 
+" horizontal window split
+nnoremap <C-w>h <C-w>s
+
 " Plugins
 call plug#begin("$XDG_CONFIG_HOME/nvim/plugged")
 Plug 'junegunn/seoul256.vim'
