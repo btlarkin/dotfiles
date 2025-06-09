@@ -53,6 +53,7 @@ Plug 'andrewradev/tagalong.vim'
 " Only bash-language-server is configured with coc.vim. See the file coc-settings.json.
 " To make it work, you need to install bash-language-server: `sudo pacman -S bash-language-server`
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc-tsserver'
 
 " Collection of snippets
 Plug 'honza/vim-snippets'
