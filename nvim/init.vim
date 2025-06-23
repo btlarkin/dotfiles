@@ -48,6 +48,9 @@ Plug 'simnalamburt/vim-mundo'
 Plug 'mattn/emmet-vim'
 Plug 'alvan/vim-closetag'
 Plug 'andrewradev/tagalong.vim'
+Plug 'neovim/nvim-lspconfig'
+Plug 'jose-elias-alvarez/null-ls.nvim'
+Plug 'MunifTanjim/prettier.nvim'
 
 " For coc.vim to work, you'll need nodejs and yarn (both available in official repos).
 " Only bash-language-server is configured with coc.vim. See the file coc-settings.json.
@@ -57,7 +60,7 @@ Plug 'neoclide/coc-tsserver'
 
 " Collection of snippets
 Plug 'honza/vim-snippets'
-
+ 
 " Compiler and linter
 Plug 'neomake/neomake'
 
@@ -107,6 +110,9 @@ let g:coc_global_extensions = [
             \ 'coc-css', 
             \ 'coc-html',
             \ 'coc-json', 
+            \ 'coc-rome',
+            \ 'coc-yank',
+            \ 'coc-yaml',
             \]
 
 " This is a very basic configuration - you can do way more than that (but do you really want to?)
@@ -277,5 +283,5 @@ let g:closetag_shortcut = '>'
 
 " Add > at current position without closing the current tag, default is ''
 "
-let g:closetag_close_shortcut = '<leader>'
+"let g:closetag_close_shortcut = '<leader>'
 
