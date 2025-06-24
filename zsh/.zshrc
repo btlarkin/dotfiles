@@ -51,3 +51,30 @@ fi
 source $DOTFILES/zsh/scripts.sh
 
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# ─── DevAccelerator new-project + launch ───
+devnew() {
+  if [ $# -lt 1 ]; then
+    echo "Usage: devnew \"<Project Title>\""
+    return 1
+  fi
+
+  # Scaffold + register
+  new_project "$1"
+
+  # Change into project dir
+  SLUG=$(echo "$1" \
+    | tr '[:upper:]' '[:lower:]' \
+    | sed -E 's/[^a-z0-9]+/-/g' \
+    | sed -E 's/^-|-$//g')
+  cd ~/projects/"$SLUG"
+
+  # Launch tmuxp session (BrowserSync included)
+  launch_project
+
+  # Open the project note in Obsidian
+  obsidian ~/workspace/DevAccelerator/03_Projects/"$SLUG".md &>/dev/null &
+
+  # (tmuxp’s browsersync pane will auto-open browser)
+}
+
