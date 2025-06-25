@@ -52,29 +52,74 @@ source $DOTFILES/zsh/scripts.sh
 
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-# ─── DevAccelerator new-project + launch ───
+# ─── DevAccelerator new-project + roadmap-builder ───
 devnew() {
-  if [ $# -lt 1 ]; then
-    echo "Usage: devnew \"<Project Title>\""
+  if (( $# < 2 )); then
+    cat <<-USAGE >&2
+Usage:
+  devnew project "<Project Title>"
+  devnew roadmap-builder <target-dir>
+USAGE
     return 1
   fi
 
-  # Scaffold + register
-  new_project "$1"
+  local tpl=$1; shift
+  local name=$1
+  local dest=~/projects/"$name"
 
-  # Change into project dir
-  SLUG=$(echo "$1" \
-    | tr '[:upper:]' '[:lower:]' \
-    | sed -E 's/[^a-z0-9]+/-/g' \
-    | sed -E 's/^-|-$//g')
-  cd ~/projects/"$SLUG"
+  case $tpl in
+    project)
+      # your existing flow
+      new_project "$name"
+      cd ~/projects/"$name"
+      launch_project
+      obsidian ~/workspace/DevAccelerator/03_Projects/"$(echo $name | slugify)".md &>/dev/null &;;
+      
+    roadmap-builder)
+      # 1) copy skeleton
+      if [[ ! -d ~/.templates/custom-roadmap-builder ]]; then
+        echo "❌ Template not found at ~/.templates/custom-roadmap-builder" >&2
+        return 1
+      fi
+      cp -R ~/.templates/custom-roadmap-builder "$dest"
+      cd "$dest"
 
-  # Launch tmuxp session (BrowserSync included)
-  launch_project
+      # 2) make sure scripts are executable
+      chmod +x build.zsh gist.zsh
 
-  # Open the project note in Obsidian
-  obsidian ~/workspace/DevAccelerator/03_Projects/"$SLUG".md &>/dev/null &
+      # 3) seed config.json if missing
+      [[ -f config.json ]] || cp config.json.sample config.json
 
-  # (tmuxp’s browsersync pane will auto-open browser)
+      # 4) dependency check
+      for dep in jq sed unzip curl xclip tmuxp; do
+        if ! command -v $dep &>/dev/null; then
+          echo "⚠️  Missing '$dep'. Install via your package manager." >&2
+        fi
+      done
+
+      # 5) initial build (and warn if jq is truly missing)
+      if command -v jq &>/dev/null; then
+        echo "📦 Running initial build…"
+        ./build.zsh
+      else
+        echo "⏭ Skipping build; install jq first." >&2
+      fi
+
+      # 6) drop into tmuxp session
+      if command -v tmuxp &>/dev/null; then
+        tmuxp load .tmuxp/roadmap.yaml
+      else
+        echo "⏭ Install tmuxp to auto-launch workspace." >&2
+      fi
+      ;;
+
+    *)
+      echo "Unknown template: $tpl" >&2; return 1;;
+  esac
 }
 
+export PATH=~/.npm-global/bin:$PATH
+export PATH="$HOME/DevEnv/scripts:$PATH"
+alias devnew='devnew.sh'
+
+export PATH="$HOME/.local/bin:$PATH"

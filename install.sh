@@ -80,3 +80,36 @@ ln -sf "$DOTFILES/tmux/tmuxp" "$XDG_CONFIG_HOME/tmuxp"
 && git clone https://github.com/tmux-plugins/tpm \
 "$XDG_CONFIG_HOME/tmux/plugins/tpm"
 
+###########
+# DevEnv  #
+###########
+
+# 1) Ensure root folder for DevEnv
+mkdir -p "$HOME/DevEnv"
+
+# 2) Sync your DevEnv/ templates & scripts from dotfiles
+#    (Assumes you checked in a DevEnv/ directory alongside your other dotfiles)
+rsync -a "$DOTFILES/DevEnv/templates" "$HOME/DevEnv/templates"
+rsync -a "$DOTFILES/DevEnv/scripts"   "$HOME/DevEnv/scripts"
+
+# 3) Make sure scripts are executable
+chmod -R +x "$HOME/DevEnv/scripts"
+
+# 4) Ensure local bin on PATH and create it
+mkdir -p "$HOME/.local/bin"
+#   you may already have this via your ~/.zshrc; just double-check
+grep -qxF 'export PATH="$HOME/.local/bin:$PATH"' "$XDG_CONFIG_HOME/zsh/.zshrc" \
+  || echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$XDG_CONFIG_HOME/zsh/.zshrc"
+
+# 5) Symlink the entry-point scripts into ~/.local/bin
+ln -sf "$HOME/DevEnv/scripts/devnew.sh"       "$HOME/.local/bin/devnew"
+ln -sf "$HOME/DevEnv/scripts/new_project.sh"  "$HOME/.local/bin/new_project"
+ln -sf "$HOME/DevEnv/scripts/launch_project.sh" \
+                                              "$HOME/.local/bin/launch_project"
+# (You can also expose build.zsh & gist.zsh if you want:
+# ln -sf "$HOME/DevEnv/scripts/build.zsh"   "$HOME/.local/bin/roadmap-build"
+# ln -sf "$HOME/DevEnv/scripts/gist.zsh"    "$HOME/.local/bin/roadmap-gist"
+# )
+
+echo "✅ DevEnv installed to ~/DevEnv, helpers in ~/.local/bin"
+
