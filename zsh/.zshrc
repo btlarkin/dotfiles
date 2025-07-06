@@ -27,6 +27,11 @@ setopt PUSHD_IGNORE_DUPS
 # Do not print the directory stack after using
 setopt PUSHD_SILENT
 
+# Turn off all beeps
+unsetopt BEEP
+# Turn off autocomplete beeps
+# unsetopt LIST_BEEP
+
 bindkey -v
 export KEYTIMEOUT=1
 
